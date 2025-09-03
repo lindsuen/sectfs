@@ -56,45 +56,35 @@ func UploadFile(c echo.Context) error {
 		}
 		defer multiFile.Close()
 
+		dstFile := new(duder.File)
 		fileName := fileHeader.Filename
 		fileSize := fileHeader.Size
 		if fileSize > int64(parseMaxLength(cfg.Config.MaxLength)) {
 			log.Println("The file " + fileName + " is too large.")
 			continue
 		}
-
-		dFile := new(duder.File)
-		dFile.SetFileID()
-		dFile.SetFileName(fileName)
-		dFile.SetFileSize(fileSize)
-		dFile.SetFileCreatedTime()
-
-		storagePath := createDateDir(cfg.Config.StoragePath) + "/" + setLocalFileName(fileName, dFile.CreatedTime)
+		dstFile.SetFileID()
+		dstFile.SetFileName(fileName)
+		dstFile.SetFileSize(fileSize)
+		dstFile.SetFileCreatedTime()
+		storagePath := createDateDir(cfg.Config.StoragePath) + "/" + setLocalFileName(fileName, dstFile.CreatedTime)
 		file, err := os.Create(storagePath)
 		if err != nil {
 			return err
 		}
 		defer file.Close()
-
 		hash := sha256.New()
 		_, err = io.Copy(file, io.TeeReader(multiFile, hash))
 		if err != nil {
 			return err
 		}
-		dFile.SetFilePath(storagePath)
-		dFile.SetFileHash(fmt.Sprintf("%x", hash.Sum(nil)))
+		dstFile.SetFilePath(storagePath)
+		dstFile.SetFileHash(fmt.Sprintf("%x", hash.Sum(nil)))
 
-		fileInfo.ID = dFile.ID
-		fileInfo.Name = dFile.Name
-		fileInfo.Size = dFile.Size
-		fileInfo.Path = dFile.Path
-		fileInfo.CreatedTime = dFile.CreatedTime
-		fileInfo.Hash = dFile.Hash
-
-		key := []byte(fileInfo.ID)
+		instantiateFile(dstFile, fileInfo)
+		key := fileInfo.ID
 		value, _ := json.Marshal(fileInfo)
-		db.Set(key, []byte(base64.RawURLEncoding.EncodeToString(value)))
-
+		db.Set([]byte(key), []byte(base64.RawURLEncoding.EncodeToString(value)))
 		response.FileList = append(response.FileList, *fileInfo)
 	}
 	return c.JSON(http.StatusOK, &response)
@@ -120,4 +110,13 @@ func setLocalFileName(name string, timestamp int64) string {
 func parseMaxLength(s string) int {
 	maxlength, _ := strconv.Atoi(s)
 	return maxlength
+}
+
+func instantiateFile(f *duder.File, i *FileInfo) {
+	i.ID = f.ID
+	i.Name = f.Name
+	i.Size = f.Size
+	i.Path = f.Path
+	i.CreatedTime = f.CreatedTime
+	i.Hash = f.Hash
 }
