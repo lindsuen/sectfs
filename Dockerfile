@@ -1,17 +1,17 @@
 FROM debian:bookworm-slim
 
-WORKDIR /usr/local/sect-server
+WORKDIR /usr/local/sectfs-server
 
 RUN set -e && mkdir config static
 
-COPY ./bin/sect ./
+COPY ./bin/sectfs ./
 
-COPY ./config/sect.conf ./config/
+COPY ./config/sectfs.conf ./config/
 
 COPY ./static/index.html ./static/
 
-RUN set -e && chmod +x ./sect
+RUN set -e && chmod +x ./sectfs
 
 EXPOSE 5363
 
-CMD ["./sect"]
+CMD ["./sectfs"]

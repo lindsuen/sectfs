@@ -1,4 +1,4 @@
-// sect - config_test.go
+// sectfs - config_test.go
 // Copyright (C) 2024 LindSuen <lindsuen@foxmail.com>
 //
 // Use of this source code is governed by a BSD 2-Clause license that can be
@@ -12,7 +12,7 @@ import (
 )
 
 func TestParseIni(t *testing.T) {
-	cfg, err := parseInitFile("../../config/sect.conf")
+	cfg, err := parseInitFile("../../config/sectfs.conf")
 	if err != nil {
 		fmt.Println(err)
 	}

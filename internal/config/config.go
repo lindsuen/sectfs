@@ -1,4 +1,4 @@
-// sect - config.go
+// sectfs - config.go
 // Copyright (C) 2024 LindSuen <lindsuen@foxmail.com>
 //
 // Use of this source code is governed by a BSD 2-Clause license that can be
@@ -28,7 +28,7 @@ type ServerConfig struct {
 }
 
 func InitServerConfig() {
-	Config, err = parseInitFile("config/sect.conf")
+	Config, err = parseInitFile("config/sectfs.conf")
 	if err != nil {
 		log.Fatalln(err)
 	}

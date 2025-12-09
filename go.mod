@@ -1,4 +1,4 @@
-module github.com/lindsuen/sect
+module github.com/lindsuen/sectfs
 
 go 1.24.0
 

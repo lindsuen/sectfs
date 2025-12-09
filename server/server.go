@@ -1,4 +1,4 @@
-// sect - server.go
+// sectfs - server.go
 // Copyright (C) 2024 LindSuen <lindsuen@foxmail.com>
 //
 // Use of this source code is governed by a BSD 2-Clause license that can be
@@ -8,10 +8,10 @@ package server
 
 import (
 	"github.com/labstack/echo/v4"
-	cfg "github.com/lindsuen/sect/internal/config"
-	badgerDB "github.com/lindsuen/sect/internal/db"
-	"github.com/lindsuen/sect/server/middleware/logger"
-	"github.com/lindsuen/sect/server/route"
+	cfg "github.com/lindsuen/sectfs/internal/config"
+	badgerDB "github.com/lindsuen/sectfs/internal/db"
+	"github.com/lindsuen/sectfs/server/middleware/logger"
+	"github.com/lindsuen/sectfs/server/route"
 )
 
 type Server struct {
