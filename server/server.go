@@ -33,7 +33,7 @@ func NewServer() *Server {
 	return s
 }
 
-// Start can start the Sect server.
+// Start can start the SectFS server.
 func Start() error {
 	serv := NewServer()
 	inst := serv.Instance

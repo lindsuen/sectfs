@@ -12,7 +12,7 @@ import (
 	s "github.com/lindsuen/sectfs/server"
 )
 
-// It's the startup portal for Sect server.
+// It's the startup portal for SectFS server.
 func main() {
 	err := s.Start()
 	if err != nil {
